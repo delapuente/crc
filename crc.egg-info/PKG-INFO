@@ -1,0 +1,20 @@
+Metadata-Version: 1.2
+Name: crc
+Version: 0.1.0a1
+Summary: Translate Quantum circuit files to Qiskit
+Home-page: UNKNOWN
+Author: Salvador de la Puente González
+Author-email: salva@unoyunodiez.com
+License: UNKNOWN
+Description-Content-Type: UNKNOWN
+Description: UNKNOWN
+Keywords: quantic computing circuit development
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Requires-Python: >=3.5
