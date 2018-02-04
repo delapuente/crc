@@ -21,6 +21,7 @@ def {circuit_name}(**kwargs):
 '''
 
 class Generator(NodeWalker):
+  """Tatsu walker for transforming the CRC AST to a Python3 + qiskit AST."""
 
   def walk_object(self, node):
     return node

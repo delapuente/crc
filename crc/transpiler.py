@@ -36,11 +36,11 @@ GRAMMAR = '''
 '''
 
 def translate(source):
-    from .backends.python3 import Generator as Py3Gen
+    from .backends.qiskit import Generator as QiskitGen
 
     model = tatsu.compile(GRAMMAR, asmodel=True)
     crc_ast = model.parse(source)
-    return ast.fix_missing_locations(Py3Gen().walk(crc_ast))
+    return ast.fix_missing_locations(QiskitGen().walk(crc_ast))
 
 def translate_file(path):
     import os
