@@ -20,7 +20,7 @@ setup(
     name='crc',
     version='0.1.0a1',
     description='Translate Quantum circuit files to Qiskit',
-    #long_description=long_description,
+    long_description=long_description,
     #url='https://github.com/delapuente/crc',
     author='Salvador de la Puente González',
     author_email='salva@unoyunodiez.com',
