@@ -8,16 +8,28 @@ from qiskit import QuantumProgram
 '''
 
 FUNCTION_TEMPLATE = '''
-def {circuit_name}(**kwargs):
-  _qp_ = QuantumProgram()
-  {in_reg_name} = _qp_.create_quantum_register('{in_reg_name}',{in_size})
-  {out_reg_name} = _qp_.create_classical_register('{out_reg_name}',{out_size})
-  _qc_ = _qp_.create_circuit('{circuit_name}',[{in_reg_name}],[{out_reg_name}])
-  # Content
-  for i in range(len({out_reg_name})):
-    _qc_.measure({in_reg_name}[i], {out_reg_name}[i])
-  _result_ = _qp_.execute('{circuit_name}', **kwargs)
-  return _result_.get_data('{circuit_name}')
+class {circuit_name}:
+  
+  def __call__(self, **kwargs):
+    _qp_ = self.program
+    _qc_ = _qp_.get_circuit('{circuit_name}')
+    {in_reg_name} = _qc_.get_qregs()['{in_reg_name}']
+    {out_reg_name} = _qc_.get_cregs()['{out_reg_name}']
+    for i in range({out_size}):
+      _qc_.measure({in_reg_name}[i], {out_reg_name}[i])
+    _result_ = _qp_.execute('{circuit_name}', **kwargs)
+    return _result_.get_data('{circuit_name}')
+
+  @property
+  def program(self):
+    _qp_ = QuantumProgram()
+    {in_reg_name} = _qp_.create_quantum_register('{in_reg_name}',{in_size})
+    {out_reg_name} = _qp_.create_classical_register('{out_reg_name}',{out_size})
+    _qc_ = _qp_.create_circuit('{circuit_name}',[{in_reg_name}],[{out_reg_name}])
+    # Contents
+    return _qp_
+
+{circuit_name} = {circuit_name}()
 '''
 
 class Generator(NodeWalker):
@@ -37,21 +49,28 @@ class Generator(NodeWalker):
 
   def walk_Board(self, node):
     module = ast.parse(MODULE_TEMPLATE)
-    module.body += [ self.walk(c) for c in node.circuits ]
+    for circuit in node.circuits:
+      module.body.extend(self.walk(circuit))
+
     return module
 
   def walk_Circuit(self, node):
-    print (node.wirings)
     statements = [ self.walk(w) for w in node.wirings ]
-    fn = ast.parse(FUNCTION_TEMPLATE.format(
+    circuit = ast.parse(FUNCTION_TEMPLATE.format(
       circuit_name=node.name,
       in_size=node.signature.input.size,
       out_size=node.signature.output.size,
       in_reg_name=node.signature.input.name,
       out_reg_name=node.signature.output.name
-    )).body[0]
-    fn.body = [*(fn.body[:4]), *statements, *(fn.body[4:])]
-    return ast.parse(fn) 
+    )).body
+    _circuit_method = circuit[0].body[1]
+    _circuit_method_body = _circuit_method.body
+    _circuit_method.body = [
+      *(_circuit_method_body[:-1]),
+      *statements,
+      *(_circuit_method_body[-1:])
+    ]
+    return circuit 
 
   def walk_Wiring(self, node):
     args = [
