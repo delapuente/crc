@@ -1,2 +1,5 @@
 astor
 tatsu
+
+[dev]
+pylint

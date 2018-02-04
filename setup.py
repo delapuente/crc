@@ -24,7 +24,7 @@ setup(
     #url='https://github.com/delapuente/crc',
     author='Salvador de la Puente González',
     author_email='salva@unoyunodiez.com',
-    classifiers=[  # Optional
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
@@ -35,5 +35,8 @@ setup(
     ],
     keywords='quantic computing circuit development',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['astor', 'tatsu']
+    install_requires=['astor', 'tatsu'],
+    extras_require={
+        'dev': ['pylint']
+    }
 )

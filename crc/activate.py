@@ -2,7 +2,7 @@ import os
 import sys
 from importlib.machinery import SourcelessFileLoader
 
-import transpiler
+from . import transpiler
 
 class CRCLoader(SourcelessFileLoader):
   
