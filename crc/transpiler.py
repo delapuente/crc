@@ -47,4 +47,4 @@ def translate_file(path):
     import astor
 
     with open(os.path.abspath(path)) as f:
-        print(astor.to_source(translate(f.read())))
+        return astor.to_source(translate(f.read()))
