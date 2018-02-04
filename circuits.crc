@@ -1,5 +1,0 @@
-
-crc bell q[2] -> c[2]:
-  q0 = /q0;
-  q1 = q0 ! q1;
-end
