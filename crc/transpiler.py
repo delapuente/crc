@@ -3,11 +3,13 @@ import tatsu
 
 GRAMMAR = '''
     @@grammar::Calc
+    @@whitespace::/[\t ]*/
 
-    start::Board = circuits:{ circuit } $ ;
+    start::Board = { newline } circuits:{ circuit } { newline }$;
 
     circuit::Circuit =
-      'crc' name:identifier signature:spec ':' wirings:{ wiring } 'end' ;
+      'crc' name:identifier signature:spec ':' { newline }+
+      wirings:{ wiring } 'end' ;
 
     spec::Spec = input:input '->' output:output ;
 
@@ -15,22 +17,29 @@ GRAMMAR = '''
 
     output = register ;
 
-    register::TRegister = name:identifier '[' size:number ']' ;
+    register::TRegister = name:identifier '[' size:int ']' ;
 
-    wiring::Wiring = target:wire '=' source:unit ';' ;
+    wiring::Wiring =
+        '-' left:{ expression }*
+        hint op:identifier hint
+        right:{ expression }* { eos }+ ;
 
-    unit =
-         | binary
-         | monary
-         ;
+    eos = | newline | ';' ;
 
-    binary::BinaryUnit = first:wire '!' second:wire ;
+    newline = {['\\u000C'] ['\\r'] '\\n'}+ ;
 
-    monary::MonaryUnit = op:/[\/]/ first:wire ;
+    hint = /[<>{}:]+/ ;
 
-    wire::Wire = name:identifier index:number ;
+    expression =
+        | wire
+        | float
+        ;
 
-    number::int = /\d+/ ;
+    wire::Wire = name:identifier index:int ;
+
+    int::int = /\d+/ ;
+
+    float::float = /\d+(\.\d+)?/ ;
 
     identifier = /[_$a-zA-Z]+/ ;
 '''

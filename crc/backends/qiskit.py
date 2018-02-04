@@ -32,12 +32,16 @@ class Generator(NodeWalker):
   def walk_int(self, node):
     return ast.Num(node)
 
+  def walk_float(self, node):
+    return ast.Num(node)
+
   def walk_Board(self, node):
     module = ast.parse(MODULE_TEMPLATE)
     module.body += [ self.walk(c) for c in node.circuits ]
     return module
 
   def walk_Circuit(self, node):
+    print (node.wirings)
     statements = [ self.walk(w) for w in node.wirings ]
     fn = ast.parse(FUNCTION_TEMPLATE.format(
       circuit_name=node.name,
@@ -50,13 +54,11 @@ class Generator(NodeWalker):
     return ast.parse(fn) 
 
   def walk_Wiring(self, node):
-    return self.walk(node.source)
-
-  def walk_MonaryUnit(self, node):
-    return self._op('h', [self.walk(node.first)])
-
-  def walk_BinaryUnit(self, node):
-    return self._op('cx', [self.walk(node.first), self.walk(node.second)])
+    args = [
+      *(self.walk(expr) for expr in node.left),
+      *(self.walk(expr) for expr in node.right)
+    ]
+    return self._op(node.op, args)
 
   def walk_Wire(self, node):
     from ast import Subscript, Name, Load, Index

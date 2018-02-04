@@ -1,5 +1,5 @@
 
 crc bell q[2] -> c[2]:
-  q0 = /q0;
-  q1 = q0 ! q1;
+  - :h > q0
+  - q0 > cx > q1
 end

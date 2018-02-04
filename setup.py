@@ -18,7 +18,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     python_requires='>=3.5',
     name='crc',
-    version='0.1.0a1',
+    version='0.2.0',
     description='Translate Quantum circuit files to Qiskit',
     long_description=long_description,
     #url='https://github.com/delapuente/crc',
