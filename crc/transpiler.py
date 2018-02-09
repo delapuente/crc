@@ -9,7 +9,7 @@ GRAMMAR = '''
 
     circuit::Circuit =
       'crc' name:identifier signature:spec ':' { newline }+
-      wirings:{ wiring } 'end' ;
+      wirings:{ wiring } 'end' { newline };
 
     spec::Spec = input:input '->' output:output ;
 
