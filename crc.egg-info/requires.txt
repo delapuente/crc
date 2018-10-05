@@ -1,5 +1,0 @@
-astor
-tatsu
-
-[dev]
-pylint

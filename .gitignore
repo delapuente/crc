@@ -101,3 +101,8 @@ ENV/
 .mypy_cache/
 
 .vscode
+.idea
+
+# dist
+*.egg-info
+dist

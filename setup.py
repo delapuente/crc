@@ -35,7 +35,7 @@ setup(
     ],
     keywords='quantic computing circuit development',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    install_requires=['astor', 'tatsu'],
+    install_requires=['astor', 'tatsu', 'abm'],
     extras_require={
         'dev': ['pylint']
     }
